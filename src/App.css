@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto';
+ }
+
+body {
+margin: 0;
+padding: 0;
+background-color: #fdfaf6;
+}
+
+.main {
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+}
+.content {
+  margin-top: 6rem;
+  flex: 1;
+  
+}
