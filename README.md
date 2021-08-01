@@ -14,7 +14,7 @@ Polish language only.
 * firebase
 # Preview
 
-<img src="me_want_1.jpg" align="center" >
+<img src="me-want_1.jpg" align="center" >
 <img src="me_want_2.jpg" align="center" >
 <img src="me_want_3.jpg" align="center" >
 <img src="me_want_4.jpg" align="center" >
