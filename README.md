@@ -6,12 +6,10 @@ Wish List creator.
 Polish language only. 
 
 # Frontend
-* React
+* React.js
 * MaterialUI
 * Formik +Yup
 
-# Backend
-* firebase
 # Preview
 
 <img src="me-want_1.jpg" align="center" >
