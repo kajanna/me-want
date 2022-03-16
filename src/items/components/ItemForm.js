@@ -1,8 +1,8 @@
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../shered/context/AuthContext';
+import React from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../../shered/context/AuthContext";
 
 import {
   Button,
@@ -12,18 +12,14 @@ import {
   MenuItem,
   FormControl,
   Typography,
-  Grow
-} from '@material-ui/core';
-import {
-  TextField,
-  Switch,
-} from 'formik-material-ui';
+  Grow,
+} from "@material-ui/core";
+import { TextField, Switch } from "formik-material-ui";
 
-import useHttpClient from '../../shered/hooks/http-req-hook';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
+import useHttpClient from "../../shered/hooks/http-req-hook";
+import ErrorModal from "../../shered/UIcustom/ErrorModal";
 
-
-const ItemForm = props => {
+const ItemForm = (props) => {
   const history = useHistory();
 
   const { token, uid } = useAuth();
@@ -31,31 +27,24 @@ const ItemForm = props => {
   const { sendRequest, error, isLoading, clearErrorHandler } = useHttpClient();
 
   const { formData } = props;
-     
+
   const wantedTypeSelection = [
-    {value: 'książki', label: 'książki'},
-    {value: 'hobby', label: 'hobby'},
-    {value: 'ubranie', label: 'ubranie'},
-    {value: 'inne', label: 'inne'}
-]
+    { value: "książki", label: "książki" },
+    { value: "hobby", label: "hobby" },
+    { value: "ubranie", label: "ubranie" },
+    { value: "inne", label: "inne" },
+  ];
 
   const itemSchema = Yup.object().shape({
-    item: Yup.string()
-      .max(80, 'Za długa nazwa')
-      .required('Wymagane pole'),
-    url: Yup.string()
-      .required('Wymagane pole')
-      .url('Nieprawidłowy URL'),
+    item: Yup.string().max(80, "Za długa nazwa").required("Wymagane pole"),
+    url: Yup.string().required("Wymagane pole").url("Nieprawidłowy URL"),
     description: Yup.string()
-      .min(8, 'Za krótki opis')
-      .max(100, 'Za długi opis')
-      .required('Wymagane pole'),
-    pictureUrl: Yup.string()
-    .url('Nieprawidłowy URL'),
-    wantedType: Yup.string()
-      .required('Wymagane pole'),
-    public: Yup.boolean()
-      .required('Wymagane pole'),
+      .min(8, "Za krótki opis")
+      .max(100, "Za długi opis")
+      .required("Wymagane pole"),
+    pictureUrl: Yup.string().url("Nieprawidłowy URL"),
+    wantedType: Yup.string().required("Wymagane pole"),
+    public: Yup.boolean().required("Wymagane pole"),
   });
 
   return (
@@ -151,7 +140,6 @@ const ItemForm = props => {
                     type="text"
                     label="URL zdjęcia"
                     name="pictureUrl"
-                    helperText="To pole nie jest obowiązkowe"
                     size="small"
                   />
                 </Box>
