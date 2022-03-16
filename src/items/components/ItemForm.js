@@ -42,7 +42,7 @@ const ItemForm = (props) => {
       .min(8, "Za krótki opis")
       .max(100, "Za długi opis")
       .required("Wymagane pole"),
-    pictureUrl: Yup.string().url("Nieprawidłowy URL"),
+    pictureUrl: Yup.string().url("Nieprawidłowy URL").required("Wymagane pole"),
     wantedType: Yup.string().required("Wymagane pole"),
     public: Yup.boolean().required("Wymagane pole"),
   });
