@@ -26,7 +26,7 @@ const Footer = () => {
 
       <Toolbar className={classes.toolBar}>
         <Typography  className={classes.footerText}>
-          Kaja Szokalska 2021
+          Kaja Szokalska 2022
         </Typography>
       </Toolbar>
 
