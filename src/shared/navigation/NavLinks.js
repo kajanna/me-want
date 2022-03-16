@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Box, Link, Divider } from '@material-ui/core';
 import { useAuth } from '../context/AuthContext';
@@ -22,7 +21,6 @@ const useStyles = makeStyles(theme => ({
       padding: 3,
       [theme.breakpoints.up('sm')]: {
         display: 'none',
-       
       }
     },
     navLink: {
@@ -31,17 +29,16 @@ const useStyles = makeStyles(theme => ({
       textDecorationLine: 'none',
       '&:hover': {
         textDecorationLine: 'none',
-      },
+      }
+    },
+    navLinkBtn: {
+      color: theme.palette.secondary.light,
     }
   }));
 
-
 const NavBar = () => {
-
       const classes = useStyles();
-
       const { uid, token, logout } = useAuth();
-      
       return (
         <Box className={classes.root}>
           <div className={classes.logo}>
@@ -49,7 +46,7 @@ const NavBar = () => {
           </div>
           <Divider />
           <Link component={RouterLink} to="/" className={classes.navLink}>
-            <Button>home</Button>
+            <Button className={classes.navLinkBtn}>home</Button>
           </Link>
           <Divider />
           <Link
@@ -57,7 +54,7 @@ const NavBar = () => {
             to={token ? `/user/${uid}` : "/auth"}
             className={classes.navLink}
           >
-            <Button>Moja Lista</Button>
+            <Button className={classes.navLinkBtn}>Moja Lista</Button>
           </Link>
           <Divider />
           <Link
@@ -65,17 +62,17 @@ const NavBar = () => {
             to={token ? "/new" : "/auth"}
             className={classes.navLink}
           >
-            <Button>Dodaj nowe</Button>
+            <Button className={classes.navLinkBtn}>Dodaj nowe</Button>
           </Link>
           <Divider />
           {!token && (
             <Link component={RouterLink} to="/auth" className={classes.navLink}>
-              <Button>Zaloguj</Button>
+              <Button className={classes.navLinkBtn}>Zaloguj</Button>
             </Link>
           )}
           {token && (
             <Link className={classes.navLink}>
-              <Button onClick={logout}>Wyloguj</Button>
+              <Button onClick={logout} className={classes.navLinkBtn}>Wyloguj</Button>
             </Link>
           )}
           <Divider />

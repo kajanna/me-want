@@ -1,20 +1,15 @@
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
 
-import {
-  Button,
-  Box, 
-  CircularProgress
-} from '@material-ui/core';
-import {
-  TextField
-} from 'formik-material-ui';
+import { Button, Box } from "@material-ui/core";
+import { TextField } from "formik-material-ui";
 
-import { useAuth } from '../../shered/context/AuthContext';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
-import useHttpClient from '../../shered/hooks/http-req-hook';
+import { useAuth } from "../../shared/context/AuthContext";
+import ErrorModal from "../../shared/UIcustom/ErrorModal";
+import useHttpClient from "../../shared/hooks/http-req-hook";
+import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
 
 const Login = () => {
   const history = useHistory();
@@ -34,7 +29,8 @@ const Login = () => {
   });
 
   return (
-    <React.Fragment>
+    <> 
+      {isLoading && <LoadingSpinner />}
       <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
       <Formik
         initialValues={{
@@ -85,7 +81,6 @@ const Login = () => {
                   size="small"
                 />
               </Box>
-              {isLoading && <CircularProgress color="secondary" />}
               <Box margin={2}>
                 <Button
                   fullWidth
@@ -101,7 +96,7 @@ const Login = () => {
           );
         }}
       </Formik>
-    </React.Fragment>
+    </>
   );
 };
 export default Login;

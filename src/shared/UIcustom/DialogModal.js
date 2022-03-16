@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     buttonsSection: {
       marginTop: 10,
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-around'
     }
 
 }));

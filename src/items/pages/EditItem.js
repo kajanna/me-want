@@ -1,40 +1,39 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router';
-import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router";
+import { Link as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import {
-   Container,
-   Card,
-   CardContent,
-   Typography,
-   Box,
-   CircularProgress,
-   Link
- } from "@material-ui/core";
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  Link,
+} from "@material-ui/core";
 
-import ItemForm from '../components/ItemForm';
-import useHttpClient from '../../shered/hooks/http-req-hook';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
-import { useAuth } from '../../shered/context/AuthContext';
+import ItemForm from "../components/ItemForm";
+import useHttpClient from "../../shared/hooks/http-req-hook";
+import ErrorModal from "../../shared/UIcustom/ErrorModal";
+import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
+import { useAuth } from "../../shared/context/AuthContext";
 
-const useStyles = makeStyles(theme => ({
-   root: {
+const useStyles = makeStyles((theme) => ({
+  root: {
     marginTop: 20,
-    display: 'flex',
-    justifyContent: 'center',
-   }, 
-   card: {
-     paddingTop: 20,
-     textAlign: 'center',
-     [theme.breakpoints.up('sm')]: {
-       width: '50%',
-     },
-     [theme.breakpoints.up('xl')]: {
-       width: '40%',
-     }
-   },
- }));
- 
+    display: "flex",
+    justifyContent: "center",
+  },
+  card: {
+    paddingTop: 20,
+    textAlign: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "50%",
+    },
+    [theme.breakpoints.up("xl")]: {
+      width: "40%",
+    },
+  },
+}));
+
 const EditItem = () => {
   const classes = useStyles();
   const { uid, token } = useAuth();
@@ -46,9 +45,9 @@ const EditItem = () => {
   const setForm = useCallback(async () => {
     try {
       const response = await sendRequest(
-          `${process.env.REACT_APP_BACKEND_URL}/items/${itemId}`,
-          'GET',
-          { Authorization: `Bearer ${token}` }
+        `${process.env.REACT_APP_BACKEND_URL}/items/${itemId}`,
+        "GET",
+        { Authorization: `Bearer ${token}` }
       );
       setLoadedItem(response.data.item);
       setLoadedItemData({
@@ -67,43 +66,39 @@ const EditItem = () => {
   }, [setForm, token]);
 
   return (
-    <Container className={classes.root}>
-      {isLoading && (
-        <Box margin={3}>
-          <CircularProgress color="secondary" />
-        </Box>
-      )}
+    <>
+      { isLoading && <LoadingSpinner/> }
       <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
-      <Card className={classes.card} variant="outlined">
-      <CardContent>
-        {!loadedItem && !isLoading && (
-          <div>
-          <Typography variant="subtitle2" color="secondary">
-            Niestety nie znaleźliśmy twojego przedmiotu. Pewnie utknął w tym
-            samym miejscu co znikające skarpety
-          </Typography>
-          <Link component={RouterLink} to={`/user/${uid}`}>
-           <Typography variant="button">
-             Wróć do swojej listy
-           </Typography>
-          </Link>
-          </div>
-        )}
-          {loadedItemData && (
-            <div>
-            <Typography variant="h5" color="primary">
-              Edytuj przedmiot
-            </Typography>
-            <ItemForm
-              formData={loadedItemData}
-              reqMethod="PATCH"
-              reqPath={`${process.env.REACT_APP_BACKEND_URL}/items/${itemId}`}
-            />
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </Container>
+      <Container className={classes.root}>
+        <Card className={classes.card} variant="outlined">
+          <CardContent>
+            {!loadedItem && !isLoading && (
+              <div>
+                <Typography variant="subtitle2" color="secondary">
+                  Niestety nie znaleźliśmy twojego przedmiotu. Pewnie utknął w
+                  tym samym miejscu co znikające skarpety
+                </Typography>
+                <Link component={RouterLink} to={`/user/${uid}`}>
+                  <Typography variant="button">Wróć do swojej listy</Typography>
+                </Link>
+              </div>
+            )}
+            {loadedItemData && (
+              <div>
+                <Typography variant="h5" color="primary">
+                  Edytuj przedmiot
+                </Typography>
+                <ItemForm
+                  formData={loadedItemData}
+                  reqMethod="PATCH"
+                  reqPath={`${process.env.REACT_APP_BACKEND_URL}/items/${itemId}`}
+                />
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </Container>
+    </>
   );
 };
 

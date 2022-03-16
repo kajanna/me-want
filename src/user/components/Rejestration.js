@@ -8,14 +8,14 @@ import {
 import {
   Button,
   Box,
-  CircularProgress
 } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 
-import Fileupload from '../../shered/UIcustom/FileUpload';
-import { useAuth } from '../../shered/context/AuthContext';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
-import useHttpClient from '../../shered/hooks/http-req-hook';
+import Fileupload from '../../shared/UIcustom/FileUpload';
+import { useAuth } from '../../shared/context/AuthContext';
+import ErrorModal from '../../shared/UIcustom/ErrorModal';
+import useHttpClient from '../../shared/hooks/http-req-hook';
+import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
 
 const registrationSchema = Yup.object().shape({
   name: Yup.string()
@@ -45,7 +45,8 @@ const Rejestration = () => {
   const { login } = useAuth();
 
   return (
-    <React.Fragment>
+    <>
+      {isLoading && <LoadingSpinner/>}
       <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
       <Formik
         initialValues={{
@@ -136,11 +137,9 @@ const Rejestration = () => {
                   </Button>
                 </label>
               </Box>
-
               <Box margin={2}>
                 <Fileupload file={values.image} />
               </Box>
-              {isLoading && <CircularProgress color="secondary" />}
               <Box margin={2}>
                 <Button
                   fullWidth
@@ -156,7 +155,7 @@ const Rejestration = () => {
           );
         }}
       </Formik>
-    </React.Fragment>
+    </>
   );
 };
 export default Rejestration;

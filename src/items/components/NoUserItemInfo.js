@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@material-ui/core";
 
-
 const useStyles = makeStyles({
     card: {
       margin: 20

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'row',
       alignItems:'center',
       backgroundColor: "#faf1e6",
-      paddingLeft: 40,
+      padding: 30,
         [theme.breakpoints.up('sm')]: {
           height: 80,
           justifyContent: 'flex-end'
@@ -25,10 +25,8 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'row',
       alignItems:'center',
-      paddingLeft: 30,
       backgroundColor: '#fdfaf6',
     },
-
     menuDisplay: {
       [theme.breakpoints.up('sm')]: {
         display: 'none'
@@ -41,7 +39,13 @@ const useStyles = makeStyles(theme => ({
         marginLeft: 'auto'
       }
     },
-   
+    logo: {
+      display: 'flex',
+        marginLeft: 'auto',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: 20,
+        }
+    }
   }));
 
 const NavBar = (props) => {

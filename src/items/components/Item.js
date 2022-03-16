@@ -1,76 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { 
-  Card, 
-  CardContent, 
-  IconButton, 
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  CardContent,
+  IconButton,
   CardMedia,
-  Box, 
   Typography,
-  CircularProgress, 
   Link,
   CardHeader,
   Divider,
-  Grow
- } from '@material-ui/core';
- import { 
-   Delete, 
-   Edit, 
-   ExitToApp 
-  } from '@material-ui/icons';
-import { useAuth } from '../../shered/context/AuthContext';
-import useHttpClient from '../../shered/hooks/http-req-hook';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
-import DialogModal  from '../../shered/UIcustom/DialogModal';
+  Grow,
+} from "@material-ui/core";
+import { Delete, Edit, ExitToApp } from "@material-ui/icons";
+
+import { useAuth } from "../../shared/context/AuthContext";
+import useHttpClient from "../../shared/hooks/http-req-hook";
+import ErrorModal from "../../shared/UIcustom/ErrorModal";
+import DialogModal from "../../shared/UIcustom/DialogModal";
+import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: 10,
-    [theme.breakpoints.up('sm')]: {
-        margin: 20,
-        width: 305, 
+    [theme.breakpoints.up("sm")]: {
+      margin: 20,
+      width: 305,
     },
     item: {
-      fontSize: 20
+      fontSize: 20,
     },
     media: {
-      objectFit: 'cover',
-      width: '100%'
-    }
+      objectFit: "cover",
+      width: "100%",
+    },
   },
 }));
 
-const Item = props => {
+const Item = (props) => {
   const classes = useStyles();
-  const { id, item, url, description, pictureUrl, wantedType, creatorId } = props;
+  const { id, item, url, description, pictureUrl, wantedType, creatorId } =
+    props;
   const { uid, token } = useAuth();
   const { sendRequest, error, isLoading, clearErrorHandler } = useHttpClient();
-  const [ showDeleteWarning, setShowDeleteWarning] = useState(false);
+  const [showDeleteWarning, setShowDeleteWarning] = useState(false);
 
   const openDeleteWarning = () => {
     setShowDeleteWarning(true);
-  }
+  };
   const closeDeleteWarning = () => {
     setShowDeleteWarning(false);
-  }
+  };
 
   const deleteItemHandler = async () => {
     setShowDeleteWarning(false);
     try {
       await sendRequest(
         `${process.env.REACT_APP_BACKEND_URL}/items/${id}`,
-        'DELETE',
-        { Authorization: `Bearer ${token}`}
+        "DELETE",
+        { Authorization: `Bearer ${token}` }
       );
       props.onDeleteItem(id);
     } catch (err) {}
-  }
+  };
 
   return (
-    <React.Fragment>
+    <>
+      { isLoading && <LoadingSpinner/> }
       <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
       <DialogModal
         open={!!showDeleteWarning}
@@ -79,11 +77,6 @@ const Item = props => {
         title="Usówanie przedmiotu"
         content="Czy na pewno chcesz usunąć przedmiot ze swojej listy?"
       />
-      {isLoading && (
-        <Box margin={3}>
-          <CircularProgress color="secondary" />
-        </Box>
-      )}
       <Grow in={true}>
         <Card className={classes.root} variant="elevation">
           <CardMedia
@@ -141,12 +134,8 @@ const Item = props => {
           </CardContent>
         </Card>
       </Grow>
-    </React.Fragment>
+    </>
   );
-}
+};
 
 export default Item;
-
-
-
-

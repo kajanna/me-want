@@ -1,22 +1,20 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import React, { Suspense } from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import { CircularProgress } from "@material-ui/core";
+import LoadingSpinner from "./shared/UIcustom/LoadingSpinner";
+import Footer from "./shared/footer/Footer";
+import Navigation from "./shared/navigation/Navigation";
+import Users from "./user/pages/Users ";
+import { useAuth } from "./shared/context/AuthContext";
 
-import Footer from './shered/footer/Footer';
-import Navigation from './shered/navigation/Navigation';
-import Users from './user/pages/Users ';
-import { useAuth} from './shered/context/AuthContext';
+import "./App.css";
 
-import './App.css';
-
-const Auth = React.lazy(() => import('./user/pages/Auth'));
-const EditItem = React.lazy(() => import('./items/pages/EditItem'));
-const NewItem = React.lazy(() => import('./items/pages/NewItem'));
-const ItemList = React.lazy(() => import('./items/pages/ItemList'));
+const Auth = React.lazy(() => import("./user/pages/Auth"));
+const EditItem = React.lazy(() => import("./items/pages/EditItem"));
+const NewItem = React.lazy(() => import("./items/pages/NewItem"));
+const ItemList = React.lazy(() => import("./items/pages/ItemList"));
 
 const App = () => {
-  
   const { token } = useAuth();
   let routes;
 
@@ -36,7 +34,7 @@ const App = () => {
           <Users />
         </Route>
         <Redirect to="/" />
-        <Route path="*" >
+        <Route path="*">
           <Redirect to="/" />
         </Route>
       </Switch>
@@ -54,7 +52,7 @@ const App = () => {
           <Users />
         </Route>
         <Redirect to="/auth" />
-        <Route path="*" >
+        <Route path="*">
           <Redirect to="/" />
         </Route>
       </Switch>
@@ -66,12 +64,12 @@ const App = () => {
       <Navigation />
       <div className="main">
         <div className="content">
-          <Suspense fallback={<div className="center"><CircularProgress color="secondary" /></div> }>  {routes}
-          </Suspense></div>
-      <Footer />
+          <Suspense fallback={<LoadingSpinner />}>{routes}</Suspense>
+        </div>
+        <Footer />
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

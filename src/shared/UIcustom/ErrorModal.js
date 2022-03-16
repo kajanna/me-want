@@ -8,6 +8,8 @@ import {
     DialogContent,
     Slide, 
     Typography,
+    Box,
+    Divider
 } from '@material-ui/core';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -16,13 +18,19 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(() => ({
     content: {
-       marginTop: 0,
-       margin: 10,
-       marginBottom:20
+       margin: 20,
+       marginTop: 0 
     },
     closeButton: {
       display: 'flex',
       justifyContent: 'flex-end'
+    },
+    infoText: {
+      marginBottom: 30
+    },
+    errorText: {
+      marginTop: 30,
+      marginBottom: 30
     }
 }));
 
@@ -31,6 +39,7 @@ const ErrorModal = props => {
     
   return (
     <Dialog
+      onClick={props.close}
       open={props.open}
       TransitionComponent={Transition}
       keepMounted
@@ -39,14 +48,15 @@ const ErrorModal = props => {
       aria-labelledby="alert-dialog-slide-error"
       aria-describedby="alert-dialog-error-has-occured"
     >
-      <IconButton onClick={props.close} className={classes.closeButton}>
+      <IconButton className={classes.closeButton}>
         <CloseIcon color="secondary" />
       </IconButton>
       <DialogContent className={classes.content}>
-        <Typography color="primary" variant="h6" gutterBottom align="center">
-          Bardzo przepraszamy ale coś poszło nie tak.
+        <Typography color="primary" variant="h6" gutterBottom align="center" className={classes.infoText}>
+          Coś poszło nie tak
         </Typography>
-        <Typography color="textSecondary" variant="body1" gutterBottom align="center">
+        <Divider />
+        <Typography color="textSecondary" variant="body1" gutterBottom align="center"  className={classes.errorText}>
           {props.error}
         </Typography>
       </DialogContent>

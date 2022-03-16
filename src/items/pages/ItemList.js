@@ -13,12 +13,13 @@ import {
 } from "@material-ui/core";
 import { Add } from '@material-ui/icons';
 
-import { useAuth } from '../../shered/context/AuthContext';
+import { useAuth } from '../../shared/context/AuthContext';
 
 import Item from '../components/Item';
 import NoUserItemInfo from '../components/NoUserItemInfo';
-import useHttpClient from '../../shered/hooks/http-req-hook';
-import ErrorModal from '../../shered/UIcustom/ErrorModal';
+import useHttpClient from '../../shared/hooks/http-req-hook';
+import ErrorModal from '../../shared/UIcustom/ErrorModal';
+import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -47,17 +48,12 @@ const useStyles = makeStyles(theme => ({
  }));
 
 const ItemList = () => {
-
    const classes = useStyles();
-
    const userId = useParams().userId; 
-
    const { uid, token } = useAuth();
-
    const [ items, setItems ] = useState();
-
    const { sendRequest, error, isLoading, clearErrorHandler } = useHttpClient();
-   
+  
    const placeDeletedHandler = deletedItemId => {
     setItems(previtems => previtems.filter(i => i.id !== deletedItemId))
    }
@@ -85,6 +81,9 @@ const ItemList = () => {
 
 
    return (
+     <>
+      { isLoading && <LoadingSpinner/> }
+      <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
      <Box>
        <Box className={classes.container}>
          {isLoading && (
@@ -123,6 +122,7 @@ const ItemList = () => {
          </Link>
        </Container>
      </Box>
+     </>
    );
 }
 
