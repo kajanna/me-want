@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   Container,
@@ -11,119 +11,119 @@ import {
   Link,
   CircularProgress,
 } from "@material-ui/core";
-import { Add } from '@material-ui/icons';
+import { Add } from "@material-ui/icons";
 
-import { useAuth } from '../../shared/context/AuthContext';
+import { useAuth } from "../../shared/context/AuthContext";
 
-import Item from '../components/Item';
-import NoUserItemInfo from '../components/NoUserItemInfo';
-import useHttpClient from '../../shared/hooks/http-req-hook';
-import ErrorModal from '../../shared/UIcustom/ErrorModal';
+import Item from "../components/Item";
+import NoUserItemInfo from "../components/NoUserItemInfo";
+import useHttpClient from "../../shared/hooks/http-req-hook";
+import ErrorModal from "../../shared/UIcustom/ErrorModal";
 import LoadingSpinner from "../../shared/UIcustom/LoadingSpinner";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
-   display: 'flex',
-   flexWrap: 'wrap',
-   flexDirection: 'row',
-   justifyContent: 'space-around',
-   
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "center",
+    [theme.breakpoints.up("xs")]: {
+      marginleft:"10%",
+      marginRight:"10%" 
+    }
   },
   addBtn: {
-   position: 'fixed',
-   bottom: 25,
-   zIndex: 10000,
-   left: '55%',
-   [theme.breakpoints.up('xs')]: {
+    position: "fixed",
+    bottom: 25,
+    zIndex: 10000,
+    left: "55%",
+    [theme.breakpoints.up("xs")]: {
       bottom: 35,
-      left: '75%'
-   },
-   [theme.breakpoints.up('md')]: {
-      left: '90%'
-   }
+      left: "75%",
+    },
+    [theme.breakpoints.up("md")]: {
+      left: "90%",
+    },
   },
   card: {
-    margin: 20
-  }
- }));
+    margin: 20,
+    [theme.breakpoints.up("xs")]: {
+      margin: 40,
+    },
+  },
+}));
 
 const ItemList = () => {
-   const classes = useStyles();
-   const userId = useParams().userId; 
-   const { uid, token } = useAuth();
-   const [ items, setItems ] = useState();
-   const { sendRequest, error, isLoading, clearErrorHandler } = useHttpClient();
-  
-   const placeDeletedHandler = deletedItemId => {
-    setItems(previtems => previtems.filter(i => i.id !== deletedItemId))
-   }
-  
-   useEffect(() => {
+  const classes = useStyles();
+  const userId = useParams().userId;
+  const { uid, token } = useAuth();
+  const [items, setItems] = useState();
+  const { sendRequest, error, isLoading, clearErrorHandler } = useHttpClient();
+
+  const placeDeletedHandler = (deletedItemId) => {
+    setItems((previtems) => previtems.filter((i) => i.id !== deletedItemId));
+  };
+
+  useEffect(() => {
     const getItemsForUserId = async () => {
-      try {                                     
+      try {
         const response = await sendRequest(
           `${process.env.REACT_APP_BACKEND_URL}/items/users/${userId}`,
-          'GET',
+          "GET",
           { Authorization: `Bearer ${token}` }
-          );
-          if (response.statusText ==='OK') {
-            if (uid !== userId) {
-              const showedItems = response.data.items.filter(i => i.public === true)
-              setItems(showedItems);
-             } else {
-               setItems(response.data.items)
-             }
+        );
+        if (response.statusText === "OK") {
+          if (uid !== userId) {
+            const showedItems = response.data.items.filter(
+              (i) => i.public === true
+            );
+            setItems(showedItems);
+          } else {
+            setItems(response.data.items);
           }
+        }
       } catch (err) {}
     };
     getItemsForUserId();
-   },[sendRequest, userId, uid, token]);
+  }, [sendRequest, userId, uid, token]);
 
-
-   return (
-     <>
-      { isLoading && <LoadingSpinner/> }
+  return (
+    <>
+      {isLoading && <LoadingSpinner />}
       <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
-     <Box>
-       <Box className={classes.container}>
-         {isLoading && (
-           <Box margin={3}>
-             <CircularProgress color="secondary" />
-           </Box>
-         )}
-         <ErrorModal open={!!error} close={clearErrorHandler} error={error} />
-         {items && items.length === 0 && (
-           <NoUserItemInfo uid={uid} userId={userId} />
-         )}
-         {items &&
-           items.length !== 0 &&
-           items.map((item) => (
-             <Item
-               key={item.id}
-               id={item.id}
-               item={item.item}
-               url={item.url}
-               description={item.description}
-               pictureUrl={item.pictureUrl}
-               wantedType={item.wantedType}
-               publicItem={item.public}
-               creatorId={item.creatorId}
-               onDeleteItem={placeDeletedHandler}
-             />
-           ))}
-       </Box>
-       <Container className={classes.addBtn}>
-         <Link underline="none" component={RouterLink} to="/new">
-           <Tooltip title="Dodaj" placement="top">
-             <Fab aria-label="add" size="medium" color="primary">
-               <Add />
-             </Fab>
-           </Tooltip>
-         </Link>
-       </Container>
-     </Box>
-     </>
-   );
-}
-
+      <Box>
+        <Box className={classes.container}>
+          {items && items.length === 0 && (
+            <NoUserItemInfo uid={uid} userId={userId} />
+          )}
+          {items &&
+            items.length !== 0 &&
+            items.map((item) => (
+              <Item
+                key={item.id}
+                id={item.id}
+                item={item.item}
+                url={item.url}
+                description={item.description}
+                pictureUrl={item.pictureUrl}
+                wantedType={item.wantedType}
+                publicItem={item.public}
+                creatorId={item.creatorId}
+                onDeleteItem={placeDeletedHandler}
+              />
+            ))}
+        </Box>
+        <Container className={classes.addBtn}>
+          <Link underline="none" component={RouterLink} to="/new">
+            <Tooltip title="Dodaj" placement="top">
+              <Fab aria-label="add" size="medium" color="primary">
+                <Add />
+              </Fab>
+            </Tooltip>
+          </Link>
+        </Container>
+      </Box>
+    </>
+  );
+};
 export default ItemList;

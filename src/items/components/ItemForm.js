@@ -147,6 +147,7 @@ const ItemForm = (props) => {
                       <Box margin={1}>
                         <Field
                           component={TextField}
+                          fullWidth
                           type="text"
                           name="wantedType"
                           label="kategoria"
